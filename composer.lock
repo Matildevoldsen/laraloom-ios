@@ -2259,12 +2259,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:Matildevoldsen/nativephp-websockets.git",
-                "reference": "854182199c289b55f4290895968c0f710cc3e99b"
+                "reference": "0d354f9e4ffad7ec2e6e6fb3b4a26bbb47d38594"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Matildevoldsen/nativephp-websockets/zipball/854182199c289b55f4290895968c0f710cc3e99b",
-                "reference": "854182199c289b55f4290895968c0f710cc3e99b",
+                "url": "https://api.github.com/repos/Matildevoldsen/nativephp-websockets/zipball/0d354f9e4ffad7ec2e6e6fb3b4a26bbb47d38594",
+                "reference": "0d354f9e4ffad7ec2e6e6fb3b4a26bbb47d38594",
                 "shasum": ""
             },
             "require": {
@@ -2315,7 +2315,7 @@
                 }
             ],
             "description": "Production WebSocket channels for NativePHP Mobile, powered by any Pusher-compatible service.",
-            "time": "2026-07-11T16:09:10+00:00"
+            "time": "2026-07-11T17:02:27+00:00"
         },
         {
             "name": "monolog/monolog",
