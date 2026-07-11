@@ -23,19 +23,11 @@ class Login extends NativeComponent
         return 'Sign in';
     }
 
-    public function updateEmail(string $value): void
-    {
-        $this->email = trim($value);
-    }
-
-    public function updatePassword(string $value): void
-    {
-        $this->password = $value;
-    }
-
     public function submit(): void
     {
-        if (! filter_var($this->email, FILTER_VALIDATE_EMAIL) || $this->password === '') {
+        $email = mb_strtolower(trim($this->email));
+
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL) || $this->password === '') {
             $this->error = 'Enter your email and password.';
 
             return;
@@ -45,7 +37,7 @@ class Login extends NativeComponent
         $this->error = '';
 
         try {
-            app(LaraloomApiClient::class)->login($this->email, $this->password, 'Laraloom for iPhone');
+            app(LaraloomApiClient::class)->login($email, $this->password, 'Laraloom for iPhone');
             $this->password = '';
             $this->replace('/profile')->transition(Transition::Fade);
         } catch (Throwable) {

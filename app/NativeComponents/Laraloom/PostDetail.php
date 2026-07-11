@@ -5,7 +5,10 @@ namespace App\NativeComponents\Laraloom;
 use App\Icons\Android;
 use App\Icons\Ios;
 use App\Services\LaraloomApiClient;
+use App\Services\LaraloomRealtime;
 use Illuminate\View\View;
+use Matildevoldsen\NativeWebSockets\Events\MessageReceived;
+use Native\Mobile\Attributes\On;
 use Native\Mobile\Edge\Layouts\Builders\NavAction;
 use Native\Mobile\Edge\Layouts\Builders\TabBarOptions;
 use Native\Mobile\Edge\NativeComponent;
@@ -41,16 +44,20 @@ class PostDetail extends NativeComponent
     public function mount(): void
     {
         $this->refreshConversation();
+        app(LaraloomRealtime::class)->subscribeToPost((int) $this->param('id'));
+    }
+
+    #[On(MessageReceived::class)]
+    public function handleRealtimeActivity(string $event): void
+    {
+        if ($event === LaraloomRealtime::ActivityEvent) {
+            $this->refreshConversation();
+        }
     }
 
     public function navTitle(): string
     {
         return (string) ($this->post['source']['name'] ?? 'Conversation');
-    }
-
-    public function updateReplyBody(string $value): void
-    {
-        $this->replyBody = $value;
     }
 
     public function replyTo(int $commentId): void

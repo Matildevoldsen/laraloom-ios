@@ -47,37 +47,20 @@ class Compose extends NativeComponent
         $this->kindIndex = max(0, min(3, $index));
     }
 
-    public function updateTitle(string $value): void
-    {
-        $this->title = $value;
-    }
-
-    public function updateBody(string $value): void
-    {
-        $this->body = $value;
-    }
-
-    public function updateUrl(string $value): void
-    {
-        $this->url = trim($value);
-    }
-
-    public function updateTags(string $value): void
-    {
-        $this->tags = $value;
-    }
-
     public function submit(): void
     {
         $kind = ['note', 'article', 'package', 'project'][$this->kindIndex];
+        $title = trim($this->title);
+        $body = trim($this->body);
+        $url = trim($this->url);
 
-        if ($this->body === '' && $this->url === '') {
+        if ($body === '' && $url === '') {
             $this->error = 'Write something or include a link.';
 
             return;
         }
 
-        if ($kind !== 'note' && trim($this->title) === '') {
+        if ($kind !== 'note' && $title === '') {
             $this->error = 'Add a title for this kind of post.';
 
             return;
@@ -89,9 +72,9 @@ class Compose extends NativeComponent
         try {
             $post = app(LaraloomApiClient::class)->createPost(array_filter([
                 'kind' => $kind,
-                'title' => trim($this->title),
-                'body' => trim($this->body),
-                'url' => $this->url,
+                'title' => $title,
+                'body' => $body,
+                'url' => $url,
                 'tags' => $this->tags,
             ], fn (string $value): bool => $value !== ''));
             $this->replace('/posts/'.$post['id'])->transition(Transition::SlideFromRight);

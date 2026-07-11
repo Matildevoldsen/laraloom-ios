@@ -64,7 +64,7 @@
                 @if ($parentId !== null)
                     <row class="items-center gap-2"><text class="flex-1 text-[11] text-[#F43F8C]">Replying to {{ '@'.$replyingTo }}</text><pressable @press="cancelReply"><text class="text-[11] text-theme-on-surface-variant">Cancel</text></pressable></row>
                 @endif
-                <outlined-text-input value="{{ $replyBody }}" placeholder="Add to the conversation…" @change="updateReplyBody" :multiline="true" :minLines="2" :maxLines="4" :maxLength="1000" :variant="0" />
+                <outlined-text-input native:model.debounce.200ms="replyBody" placeholder="Add to the conversation…" :multiline="true" :minLines="2" :maxLines="4" :maxLength="1000" :variant="0" />
                 <row class="justify-end"><button class="glass:prominent:interactive" variant="accent" size="sm" :loading="$isSubmitting" :disabled="$isSubmitting" @press="submitReply">Reply</button></row>
             </column>
 

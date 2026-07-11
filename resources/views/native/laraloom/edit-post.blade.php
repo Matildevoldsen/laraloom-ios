@@ -16,19 +16,19 @@
             <column class="w-full gap-5 p-5 rounded-3xl bg-theme-surface border border-theme-outline">
                 <column class="gap-2">
                     <text class="text-[12] font-semibold text-theme-on-surface">Title</text>
-                    <outlined-text-input value="{{ $title }}" placeholder="A clear, useful headline" @change="updateTitle" :variant="0" />
+                    <outlined-text-input native:model.debounce.300ms="title" placeholder="A clear, useful headline" :variant="0" />
                 </column>
                 <column class="gap-2">
                     <text class="text-[12] font-semibold text-theme-on-surface">Your take</text>
-                    <outlined-text-input value="{{ $body }}" placeholder="Add context, not hype…" @change="updateBody" :variant="0" />
+                    <outlined-text-input native:model.debounce.300ms="body" placeholder="Add context, not hype…" :variant="0" />
                 </column>
                 <column class="gap-2">
                     <text class="text-[12] font-semibold text-theme-on-surface">Original URL</text>
-                    <outlined-text-input value="{{ $url }}" placeholder="https://" @change="updateUrl" :variant="0" />
+                    <outlined-text-input native:model.debounce.300ms="url" placeholder="https://" keyboard="url" :variant="0" />
                 </column>
                 <column class="gap-2">
                     <text class="text-[12] font-semibold text-theme-on-surface">Tags</text>
-                    <outlined-text-input value="{{ $tags }}" placeholder="Laravel, NativePHP" @change="updateTags" :variant="0" />
+                    <outlined-text-input native:model.debounce.300ms="tags" placeholder="Laravel, NativePHP" :variant="0" />
                 </column>
                 <button class="glass:prominent:interactive" variant="accent" size="lg" :loading="$isSubmitting" :disabled="$isSubmitting" @press="submit">Save changes</button>
                 <button variant="destructive" size="md" @press="confirmDelete">Delete post</button>

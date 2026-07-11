@@ -10,7 +10,10 @@
         "android"
     ],
     "repositories": {
-
+        "websockets": {
+            "type": "vcs",
+            "url": "git@github.com:Matildevoldsen/nativephp-websockets.git"
+        },
         "mobile": {
             "type": "vcs",
             "url": "https://github.com/nativephp/mobile-air"
@@ -31,7 +34,8 @@
         "laravel/tinker": "^3.0",
         "nativephp/mobile": "dev-element",
         "nativephp/mobile-secure-storage": "^1.0",
-        "nativephp/native-ui": "dev-codex/primary-context-menu"
+        "nativephp/native-ui": "dev-codex/primary-context-menu",
+        "matildevoldsen/nativephp-websockets": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

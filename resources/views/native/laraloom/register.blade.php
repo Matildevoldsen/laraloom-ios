@@ -11,23 +11,23 @@
         <column class="w-full gap-4 p-5 rounded-3xl bg-theme-surface border border-theme-outline">
             <column class="gap-2">
                 <text class="text-[12] font-semibold text-theme-on-surface">Name</text>
-                <outlined-text-input value="{{ $name }}" placeholder="Your name" @change="updateName" :variant="0" />
+                <outlined-text-input native:model.debounce.400ms="name" placeholder="Your name" :variant="0" />
             </column>
             <column class="gap-2">
                 <text class="text-[12] font-semibold text-theme-on-surface">Username</text>
-                <outlined-text-input value="{{ $username }}" placeholder="laravelbuilder" @change="updateUsername" :variant="0" />
+                <outlined-text-input native:model.debounce.400ms="username" placeholder="laravelbuilder" :variant="0" />
             </column>
             <column class="gap-2">
                 <text class="text-[12] font-semibold text-theme-on-surface">Email</text>
-                <outlined-text-input value="{{ $email }}" placeholder="you@example.com" @change="updateEmail" :variant="0" />
+                <outlined-text-input native:model.debounce.400ms="email" placeholder="you@example.com" keyboard="email" :variant="0" />
             </column>
             <column class="gap-2">
                 <text class="text-[12] font-semibold text-theme-on-surface">Password</text>
-                <outlined-text-input value="{{ $password }}" placeholder="Create a password" :secure="true" @change="updatePassword" :variant="0" />
+                <outlined-text-input native:model.debounce.400ms="password" placeholder="Create a password" :secure="true" :variant="0" />
             </column>
             <column class="gap-2">
                 <text class="text-[12] font-semibold text-theme-on-surface">Confirm password</text>
-                <outlined-text-input value="{{ $passwordConfirmation }}" placeholder="Repeat your password" :secure="true" @change="updatePasswordConfirmation" :variant="0" />
+                <outlined-text-input native:model.debounce.400ms="passwordConfirmation" placeholder="Repeat your password" :secure="true" @submit="submit" :variant="0" />
             </column>
 
             @if ($error !== '')

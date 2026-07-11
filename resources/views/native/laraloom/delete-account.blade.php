@@ -11,7 +11,7 @@
         <column class="w-full gap-4 p-5 rounded-[22] bg-theme-surface border border-theme-outline">
             <column class="gap-2">
                 <text class="text-[12] font-semibold text-theme-on-surface">Confirm your password</text>
-                <outlined-text-input value="{{ $password }}" placeholder="Your password" :secure="true" @change="updatePassword" :variant="0" />
+                <outlined-text-input native:model.debounce.400ms="password" placeholder="Your password" :secure="true" @submit="confirmDelete" :variant="0" />
             </column>
 
             @if ($error !== '')

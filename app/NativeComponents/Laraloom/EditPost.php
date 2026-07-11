@@ -75,29 +75,13 @@ class EditPost extends NativeComponent
         $this->kindIndex = max(0, min(count($this->kinds) - 1, $index));
     }
 
-    public function updateTitle(string $value): void
-    {
-        $this->title = $value;
-    }
-
-    public function updateBody(string $value): void
-    {
-        $this->body = $value;
-    }
-
-    public function updateUrl(string $value): void
-    {
-        $this->url = trim($value);
-    }
-
-    public function updateTags(string $value): void
-    {
-        $this->tags = $value;
-    }
-
     public function submit(): void
     {
-        if ($this->postId === 0 || ($this->body === '' && $this->url === '')) {
+        $title = trim($this->title);
+        $body = trim($this->body);
+        $url = trim($this->url);
+
+        if ($this->postId === 0 || ($body === '' && $url === '')) {
             $this->error = 'Write something or include a link.';
 
             return;
@@ -109,9 +93,9 @@ class EditPost extends NativeComponent
         try {
             $this->api()->updatePost($this->postId, array_filter([
                 'kind' => $this->kinds[$this->kindIndex],
-                'title' => trim($this->title),
-                'body' => trim($this->body),
-                'url' => $this->url,
+                'title' => $title,
+                'body' => $body,
+                'url' => $url,
                 'tags' => $this->tags,
             ], fn (string $value): bool => $value !== ''));
             $this->replace('/posts/'.$this->postId)->transition(Transition::Fade);

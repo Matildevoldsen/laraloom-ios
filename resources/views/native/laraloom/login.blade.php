@@ -11,11 +11,11 @@
         <column class="w-full gap-5 p-5 rounded-3xl bg-theme-surface border border-theme-outline">
             <column class="gap-2">
                 <text class="text-[12] font-semibold text-theme-on-surface">Email</text>
-                <outlined-text-input value="{{ $email }}" placeholder="you@example.com" @change="updateEmail" :variant="0" />
+                <outlined-text-input native:model.debounce.400ms="email" placeholder="you@example.com" keyboard="email" :variant="0" ref="login-email" />
             </column>
             <column class="gap-2">
                 <text class="text-[12] font-semibold text-theme-on-surface">Password</text>
-                <outlined-text-input value="{{ $password }}" placeholder="Your password" :secure="true" @change="updatePassword" :variant="0" />
+                <outlined-text-input native:model.debounce.400ms="password" placeholder="Your password" :secure="true" @submit="submit" :variant="0" ref="login-password" />
             </column>
 
             @if ($error !== '')

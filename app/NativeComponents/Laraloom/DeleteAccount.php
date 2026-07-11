@@ -37,11 +37,6 @@ class DeleteAccount extends NativeComponent
         return TabBarOptions::make()->hidden();
     }
 
-    public function updatePassword(string $value): void
-    {
-        $this->password = $value;
-    }
-
     public function confirmDeletion(): void
     {
         if ($this->password === '') {

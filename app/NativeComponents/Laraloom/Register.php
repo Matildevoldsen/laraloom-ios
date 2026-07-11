@@ -36,34 +36,13 @@ class Register extends NativeComponent
         return 'Create account';
     }
 
-    public function updateName(string $value): void
-    {
-        $this->name = trim($value);
-    }
-
-    public function updateUsername(string $value): void
-    {
-        $this->username = strtolower(trim($value));
-    }
-
-    public function updateEmail(string $value): void
-    {
-        $this->email = strtolower(trim($value));
-    }
-
-    public function updatePassword(string $value): void
-    {
-        $this->password = $value;
-    }
-
-    public function updatePasswordConfirmation(string $value): void
-    {
-        $this->passwordConfirmation = $value;
-    }
-
     public function submit(): void
     {
-        if ($this->name === '' || $this->username === '' || ! filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+        $name = trim($this->name);
+        $username = mb_strtolower(trim($this->username));
+        $email = mb_strtolower(trim($this->email));
+
+        if ($name === '' || $username === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->error = 'Add your name, username and a valid email.';
 
             return;
@@ -80,9 +59,9 @@ class Register extends NativeComponent
 
         try {
             app(LaraloomApiClient::class)->register(
-                $this->name,
-                $this->username,
-                $this->email,
+                $name,
+                $username,
+                $email,
                 $this->password,
                 $this->passwordConfirmation,
                 'Laraloom mobile',

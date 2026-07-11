@@ -5,7 +5,10 @@ namespace App\NativeComponents\Laraloom;
 use App\Icons\Android;
 use App\Icons\Ios;
 use App\Services\LaraloomApiClient;
+use App\Services\LaraloomRealtime;
 use Illuminate\View\View;
+use Matildevoldsen\NativeWebSockets\Events\MessageReceived;
+use Native\Mobile\Attributes\On;
 use Native\Mobile\Edge\Layouts\Builders\NavAction;
 use Native\Mobile\Edge\Layouts\Builders\TabBarOptions;
 use Native\Mobile\Edge\NativeComponent;
@@ -47,8 +50,17 @@ class Admin extends NativeComponent
             }
 
             $this->refresh();
+            app(LaraloomRealtime::class)->subscribeToAdmin();
         } catch (Throwable) {
             $this->error = 'Admin tools could not be opened.';
+        }
+    }
+
+    #[On(MessageReceived::class)]
+    public function handleRealtimeActivity(string $event): void
+    {
+        if ($event === LaraloomRealtime::ActivityEvent) {
+            $this->refresh();
         }
     }
 
