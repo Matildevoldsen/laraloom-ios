@@ -2524,12 +2524,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Matildevoldsen/native-ui.git",
-                "reference": "0ab6bedd8a12014fc17efd2ae7de2abb9d9270fb"
+                "reference": "c545c584aa15d63f85d7b2e5a100709710749fa5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Matildevoldsen/native-ui/zipball/0ab6bedd8a12014fc17efd2ae7de2abb9d9270fb",
-                "reference": "0ab6bedd8a12014fc17efd2ae7de2abb9d9270fb",
+                "url": "https://api.github.com/repos/Matildevoldsen/native-ui/zipball/c545c584aa15d63f85d7b2e5a100709710749fa5",
+                "reference": "c545c584aa15d63f85d7b2e5a100709710749fa5",
                 "shasum": ""
             },
             "require": {
@@ -2573,7 +2573,7 @@
             "support": {
                 "source": "https://github.com/Matildevoldsen/native-ui/tree/codex/primary-context-menu"
             },
-            "time": "2026-07-11T14:12:40+00:00"
+            "time": "2026-07-11T14:57:52+00:00"
         },
         {
             "name": "nesbot/carbon",

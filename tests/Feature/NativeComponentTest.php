@@ -36,3 +36,15 @@ test('projects exposes a retryable error instead of fake content', function () {
     expect($component->projects)->toBe([])
         ->and($component->error)->not->toBe('');
 });
+
+test('the iOS privacy manifest declares runtime required reason APIs', function () {
+    $manifest = file_get_contents(resource_path('ios/PrivacyInfo.xcprivacy'));
+
+    expect($manifest)
+        ->toContain('NSPrivacyAccessedAPICategoryFileTimestamp')
+        ->toContain('C617.1')
+        ->toContain('NSPrivacyAccessedAPICategorySystemBootTime')
+        ->toContain('35F9.1')
+        ->toContain('NSPrivacyAccessedAPICategoryDiskSpace')
+        ->toContain('E174.1');
+});
