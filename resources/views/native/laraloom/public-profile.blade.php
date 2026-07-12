@@ -71,8 +71,8 @@
                 </column>
             @endif
 
-            <modal :visible="$showPeopleModal" :dismissible="true" @dismiss="closePeople">
-                <column class="w-full h-full bg-theme-background px-5 pt-5 pb-10">
+            <bottom-sheet :visible="$showPeopleModal" detents="medium,large" @dismiss="closePeople">
+                <column class="w-full bg-theme-background px-5 pt-2 pb-8">
                     <row class="items-center pb-4 border-b border-theme-outline"><text class="text-[20] font-bold text-theme-on-surface">{{ ucfirst($peopleList ?? 'People') }}</text></row>
                     @forelse ($this->visiblePeople() as $person)
                         <pressable @press="openPerson({{ $person['id'] }})" class="w-full py-4 border-b border-theme-outline"><row class="items-center gap-3"><column class="w-[44] h-[44] rounded-full bg-pink-50 dark:bg-[#2B2031] items-center justify-center"><text class="font-bold text-[#F43F8C]">{{ strtoupper(substr($person['name'], 0, 1)) }}</text></column><column class="flex-1"><text class="text-[14] font-bold text-theme-on-surface">{{ $person['name'] }}</text><text class="text-[11] text-theme-on-surface-variant">{{ '@'.$person['username'] }}</text></column><icon name="chevron.right" :size="13" color="#8E8797" /></row></pressable>
@@ -80,7 +80,7 @@
                         <column class="items-center gap-2 py-12"><icon name="person.2" :size="24" color="#F43F8C" /><text class="text-[13] text-theme-on-surface-variant">Nobody here yet.</text></column>
                     @endforelse
                 </column>
-            </modal>
+            </bottom-sheet>
         @endif
     </column>
 </refreshable>

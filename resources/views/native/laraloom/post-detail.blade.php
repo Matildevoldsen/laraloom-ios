@@ -40,13 +40,14 @@
                 </row>
             </column>
 
-            <column class="w-full px-5 py-3 border-b border-theme-outline">
-                @if ($parentId !== null)<row class="items-center gap-2 mb-2"><text class="flex-1 text-[11] text-[#F43F8C]">Replying to {{ '@'.$replyingTo }}</text><pressable @press="cancelReply"><text class="text-[11] text-theme-on-surface-variant">Cancel</text></pressable></row>@endif
-                <row class="items-end gap-3">
-                    <column class="w-[34] h-[34] rounded-full bg-pink-50 dark:bg-[#2B2031] items-center justify-center"><icon name="person.fill" :size="15" color="#F43F8C" /></column>
-                    <outlined-text-input native:model.debounce.200ms="replyBody" placeholder="Post your reply" :multiline="true" :minLines="1" :maxLines="4" :maxLength="1000" :variant="0" class="flex-1" />
-                    <button class="glass:prominent:interactive" variant="accent" size="sm" :loading="$isSubmitting" :disabled="$isSubmitting" @press="submitReply">Reply</button>
+            <column class="w-full px-4 py-3 gap-2 border-b border-theme-outline">
+                @if ($parentId !== null)<row class="items-center gap-2 pl-[45]"><text class="flex-1 text-[11] text-[#F43F8C]">Replying to {{ '@'.$replyingTo }}</text><pressable @press="cancelReply" class="px-2 py-1"><text class="text-[11] font-semibold text-theme-on-surface-variant">Cancel</text></pressable></row>@endif
+                <row class="items-end gap-2">
+                    <column class="w-[38] h-[38] rounded-full bg-pink-50 dark:bg-[#2B2031] items-center justify-center"><icon name="person.fill" :size="16" color="#F43F8C" /></column>
+                    <bare-text-input native:model.debounce.200ms="replyBody" placeholder="Post your reply" :multiline="true" :minLines="1" :maxLines="5" :maxLength="1000" :keepFocusOnSubmit="true" @submit="submitReply" class="flex-1 min-h-[42] rounded-[21] bg-theme-surface-variant px-4 py-3 text-theme-on-surface" />
+                    <button class="glass:prominent:interactive" variant="accent" size="sm" icon="arrow.up" a11y-label="Post reply" :loading="$isSubmitting" :disabled="$isSubmitting" @press="submitReply" />
                 </row>
+                @if ($replyBody !== '')<text class="pr-[48] text-right text-[10] text-theme-on-surface-variant">{{ mb_strlen($replyBody) }}/1000</text>@endif
             </column>
 
             <column class="w-full">
