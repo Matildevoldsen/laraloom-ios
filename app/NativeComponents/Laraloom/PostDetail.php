@@ -196,6 +196,15 @@ class PostDetail extends NativeComponent
         }
     }
 
+    public function openMedia(int $attachmentIndex): void
+    {
+        $url = $this->post['attachments'][$attachmentIndex]['url'] ?? null;
+
+        if (is_string($url) && filter_var($url, FILTER_VALIDATE_URL)) {
+            Browser::inApp($url);
+        }
+    }
+
     public function render(): View
     {
         return view('native.laraloom.post-detail');

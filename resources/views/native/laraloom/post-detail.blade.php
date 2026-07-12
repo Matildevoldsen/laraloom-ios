@@ -25,6 +25,19 @@
                     <text class="mt-2 text-[15] leading-[21] text-theme-on-surface">{{ $post['summary'] }}</text>
                 @endif
 
+                @if (! empty($post['attachments']))
+                    <column class="w-full gap-2 mt-3">
+                        @foreach ($post['attachments'] as $attachmentIndex => $attachment)
+                            <list-item
+                                headline="{{ $attachment['type'] === 'video' ? 'Video attachment' : 'Photo attachment' }}"
+                                supporting="Tap to view full size"
+                                @if ($attachment['type'] === 'image') :leadingImage="$attachment['url']" @else leadingIcon="play.rectangle" @endif
+                                @press="openMedia({{ $attachmentIndex }})"
+                            />
+                        @endforeach
+                    </column>
+                @endif
+
                 @if (! empty($post['tags']))
                     <row class="items-center gap-2 mt-3">@foreach (array_slice($post['tags'], 0, 4) as $tag)<text class="text-[11] text-[#F43F8C]">#{{ $tag }}</text>@endforeach</row>
                 @endif

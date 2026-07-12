@@ -13,6 +13,7 @@ use Native\Mobile\Edge\Layouts\Builders\NavAction;
 use Native\Mobile\Edge\NativeComponent;
 use Native\Mobile\Edge\Transition;
 use Native\Mobile\Events\Alert\ButtonPressed;
+use Native\Mobile\Facades\Browser;
 use Native\Mobile\Facades\Dialog;
 use Throwable;
 
@@ -33,6 +34,16 @@ class Today extends NativeComponent
     {
         $this->refresh();
         app(LaraloomRealtime::class)->subscribeToFeed();
+    }
+
+    public function openMedia(int $postId, int $attachmentIndex): void
+    {
+        $post = collect($this->posts)->firstWhere('id', $postId);
+        $url = is_array($post) ? ($post['attachments'][$attachmentIndex]['url'] ?? null) : null;
+
+        if (is_string($url) && filter_var($url, FILTER_VALIDATE_URL)) {
+            Browser::inApp($url);
+        }
     }
 
     #[On(MessageReceived::class)]

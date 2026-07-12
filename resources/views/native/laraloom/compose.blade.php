@@ -33,6 +33,14 @@
                 <outlined-text-input native:model.debounce.300ms="tags" placeholder="Laravel, NativePHP, open source" :variant="0" />
             </column>
 
+            <row class="w-full items-center gap-3">
+                <button class="glass:clear:interactive" icon="photo.on.rectangle.angled" @press="chooseMedia">Photo or video</button>
+                @if ($mediaPaths !== [])
+                    <text class="flex-1 text-[12] text-theme-on-surface-variant">{{ count($mediaPaths) }} selected</text>
+                    <button class="glass:clear:interactive" size="sm" icon="xmark" @press="clearMedia">Remove</button>
+                @endif
+            </row>
+
             @if ($error !== '')
                 <text class="text-[12] text-red-600 dark:text-red-300">{{ $error }}</text>
             @endif

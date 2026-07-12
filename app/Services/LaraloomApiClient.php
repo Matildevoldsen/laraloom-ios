@@ -135,11 +135,33 @@ class LaraloomApiClient
      * @param  array{kind: string, title?: string, body?: string, url?: string, tags?: string}  $attributes
      * @return array<string, mixed>
      */
-    public function createPost(array $attributes): array
+    public function createPost(array $attributes, array $mediaPaths = []): array
     {
-        return $this->data(
-            $this->request(authenticated: true)->post('/posts', $attributes),
-        );
+        $request = $this->request(authenticated: true);
+        $handles = [];
+
+        try {
+            foreach ($mediaPaths as $path) {
+                if (! is_string($path) || ! is_file($path)) {
+                    continue;
+                }
+
+                $handle = fopen($path, 'rb');
+
+                if ($handle === false) {
+                    continue;
+                }
+
+                $handles[] = $handle;
+                $request->attach('attachments[]', $handle, basename($path));
+            }
+
+            return $this->data($request->post('/posts', $attributes));
+        } finally {
+            foreach ($handles as $handle) {
+                fclose($handle);
+            }
+        }
     }
 
     /**

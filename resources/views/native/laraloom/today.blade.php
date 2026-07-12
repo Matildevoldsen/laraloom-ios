@@ -51,6 +51,19 @@
                             @endif
                             <pressable :menu="$this->postMenu($post)" @press="openPost({{ $post['id'] }})"><text class="text-[13] text-theme-on-surface-variant" :maxLines="2">{{ $post['summary'] ?: $post['body'] }}</text></pressable>
 
+                            @if (! empty($post['attachments']))
+                                <column class="w-full gap-2 pt-1">
+                                    @foreach (array_slice($post['attachments'], 0, 2) as $attachmentIndex => $attachment)
+                                        <list-item
+                                            headline="{{ $attachment['type'] === 'video' ? 'Video' : 'Photo' }}"
+                                            supporting="Tap to view"
+                                            @if ($attachment['type'] === 'image') :leadingImage="$attachment['url']" @else leadingIcon="play.rectangle" @endif
+                                            @press="openMedia({{ $post['id'] }}, {{ $attachmentIndex }})"
+                                        />
+                                    @endforeach
+                                </column>
+                            @endif
+
                             @if (! empty($post['tags']))
                                 <row class="items-center gap-2 pt-1">
                                     @foreach (array_slice($post['tags'], 0, 2) as $tag)
