@@ -32,6 +32,8 @@ class Compose extends NativeComponent
 
     public bool $isSubmitting = false;
 
+    public bool $showsDetails = false;
+
     /** @var array<int, string> */
     public array $mediaPaths = [];
 
@@ -74,6 +76,16 @@ class Compose extends NativeComponent
     public function clearMedia(): void
     {
         $this->mediaPaths = [];
+    }
+
+    public function toggleDetails(): void
+    {
+        $this->showsDetails = ! $this->showsDetails;
+    }
+
+    public function closeDetails(): void
+    {
+        $this->showsDetails = false;
     }
 
     public function submit(): void

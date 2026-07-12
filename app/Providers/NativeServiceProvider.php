@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Matildevoldsen\NativeWebSockets\WebSocketsServiceProvider;
+use Native\Mobile\Providers\CameraServiceProvider;
 use Native\Mobile\Providers\SecureStorageServiceProvider;
 use Nativephp\NativeUi\NativeUIServiceProvider;
 
@@ -40,6 +41,7 @@ class NativeServiceProvider extends ServiceProvider
             NativeUIServiceProvider::class,
             SecureStorageServiceProvider::class,
             WebSocketsServiceProvider::class,
+            CameraServiceProvider::class,
         ];
     }
 }

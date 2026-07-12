@@ -1,5 +1,6 @@
 <?php
 
+use App\NativeComponents\Laraloom\Compose;
 use App\NativeComponents\Laraloom\Projects;
 use App\NativeComponents\Laraloom\Today;
 use App\Services\LaraloomApiClient;
@@ -25,6 +26,18 @@ test('today loads feed data into native component state', function () {
         ->and($component->error)->toBe('');
 });
 
+test('compose presents optional metadata in a dismissible details sheet', function () {
+    $component = new Compose;
+
+    expect($component->showsDetails)->toBeFalse();
+
+    $component->toggleDetails();
+    expect($component->showsDetails)->toBeTrue();
+
+    $component->closeDetails();
+    expect($component->showsDetails)->toBeFalse();
+});
+
 test('projects exposes a retryable error instead of fake content', function () {
     $api = Mockery::mock(LaraloomApiClient::class);
     $api->shouldReceive('projects')->once()->andThrow(new RuntimeException('offline'));
@@ -47,4 +60,17 @@ test('the iOS privacy manifest declares runtime required reason APIs', function 
         ->toContain('35F9.1')
         ->toContain('NSPrivacyAccessedAPICategoryDiskSpace')
         ->toContain('E174.1');
+});
+
+test('the native media plugins register picker and file bridge functions', function () {
+    $cameraManifest = file_get_contents(base_path('vendor/nativephp/mobile-camera/nativephp.json'));
+    $fileBridge = file_get_contents(base_path('vendor/nativephp/mobile/resources/xcode/NativePHP/Bridge/Functions/FileFunctions.swift'));
+    $provider = file_get_contents(app_path('Providers/NativeServiceProvider.php'));
+
+    expect($cameraManifest)
+        ->toContain('Camera.PickMedia')
+        ->and($fileBridge)
+        ->toContain('class Copy: BridgeFunction')
+        ->and($provider)
+        ->toContain('CameraServiceProvider::class');
 });
