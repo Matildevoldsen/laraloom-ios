@@ -34,7 +34,7 @@
             </column>
 
             <row class="w-full items-center gap-3">
-                <button class="glass:clear:interactive" icon="photo.on.rectangle.angled" @press="chooseMedia">Photo or video</button>
+                <button class="glass:clear:interactive h-[44] px-4 border border-[#F43F8C]/40" icon="photo.on.rectangle.angled" @press="chooseMedia">Add photo or video</button>
                 @if ($mediaPaths !== [])
                     <text class="flex-1 text-[12] text-theme-on-surface-variant">{{ count($mediaPaths) }} selected</text>
                     <button class="glass:clear:interactive" size="sm" icon="xmark" @press="clearMedia">Remove</button>

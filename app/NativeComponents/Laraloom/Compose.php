@@ -3,12 +3,14 @@
 namespace App\NativeComponents\Laraloom;
 
 use App\Services\LaraloomApiClient;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Native\Mobile\Edge\Layouts\Builders\TabBarOptions;
 use Native\Mobile\Edge\NativeComponent;
 use Native\Mobile\Edge\Transition;
 use Native\Mobile\Events\Gallery\MediaSelected;
 use Native\Mobile\Facades\Camera;
+use Native\Mobile\Facades\File;
 use Throwable;
 
 class Compose extends NativeComponent
@@ -60,11 +62,12 @@ class Compose extends NativeComponent
                     return;
                 }
 
-                $this->mediaPaths = array_values(array_filter(array_map(
-                    fn (mixed $file): ?string => $this->mediaPath($file),
-                    $event->files,
-                )));
-                $this->error = '';
+                $this->mediaPaths = array_values(array_filter(array_map(function (mixed $file): ?string {
+                    $source = $this->mediaPath($file);
+
+                    return $source ? $this->copyMediaToStorage($source) : null;
+                }, $event->files)));
+                $this->error = $this->mediaPaths === [] ? 'The selected media could not be prepared.' : '';
             });
     }
 
@@ -129,5 +132,14 @@ class Compose extends NativeComponent
         $path = $file['path'] ?? $file['url'] ?? null;
 
         return is_string($path) ? $path : null;
+    }
+
+    private function copyMediaToStorage(string $source): ?string
+    {
+        $extension = pathinfo($source, PATHINFO_EXTENSION);
+        $filename = Str::uuid().($extension !== '' ? '.'.$extension : '');
+        $destination = storage_path('app/media/'.$filename);
+
+        return File::copy($source, $destination) ? $destination : null;
     }
 }
