@@ -50,6 +50,24 @@ it('connects and subscribes to the public feed', function () {
         ]);
 });
 
+it('subscribes to realtime follow changes for a profile', function () {
+    config()->set('laraloom.realtime', [
+        'key' => 'public-key',
+        'host' => 'wss.vask.dev',
+        'port' => 443,
+    ]);
+    $bridge = FakeBridge::enable()
+        ->respondTo('WebSockets.Connect', ['success' => true])
+        ->respondTo('WebSockets.Subscribe', ['success' => true]);
+
+    (new LaraloomRealtime(realtimeTokenStore('secure-token')))->subscribeToProfile(17);
+
+    $bridge->assertCalled('WebSockets.Subscribe', fn (array $parameters): bool => $parameters === [
+        'channel' => 'laraloom.profiles.17',
+        'events' => ['follow.changed'],
+    ]);
+});
+
 it('authenticates the private admin subscription with secure storage token', function () {
     config()->set('laraloom.api_url', 'https://laraloom.example/api/v1');
     config()->set('laraloom.realtime', [

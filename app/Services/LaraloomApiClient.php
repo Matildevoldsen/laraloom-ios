@@ -59,7 +59,19 @@ class LaraloomApiClient
     /** @return array<string, mixed> */
     public function profile(string $username): array
     {
-        return $this->data($this->request()->get("/profiles/{$username}"));
+        return $this->data($this->request($this->hasToken())->get("/profiles/{$username}"));
+    }
+
+    /** @return array<string, mixed> */
+    public function profileById(int $userId): array
+    {
+        return $this->data($this->request($this->hasToken())->get("/profiles/id/{$userId}"));
+    }
+
+    /** @return array{active: bool, count: int} */
+    public function toggleFollow(string $username): array
+    {
+        return $this->interaction("/profiles/{$username}/follow");
     }
 
     /** @return array<string, mixed> */

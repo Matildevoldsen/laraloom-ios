@@ -57,7 +57,19 @@ class PostDetail extends NativeComponent
 
     public function navTitle(): string
     {
-        return (string) ($this->post['source']['name'] ?? 'Conversation');
+        return 'Post';
+    }
+
+    public function openProfile(?int $commentId = null): void
+    {
+        $comment = $commentId === null ? null : collect($this->comments)->firstWhere('id', $commentId);
+        $userId = is_array($comment)
+            ? ($comment['author']['id'] ?? null)
+            : ($this->post['author']['id'] ?? null);
+
+        if (is_int($userId)) {
+            $this->navigate("/people/{$userId}")->transition(Transition::SlideFromRight);
+        }
     }
 
     public function replyTo(int $commentId): void

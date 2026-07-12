@@ -11,6 +11,8 @@ final class LaraloomRealtime
 {
     public const string ActivityEvent = 'community.activity';
 
+    public const string FollowEvent = 'follow.changed';
+
     public function __construct(private readonly TokenStore $tokens) {}
 
     public function subscribeToFeed(): void
@@ -24,6 +26,13 @@ final class LaraloomRealtime
     {
         if ($this->connect()) {
             WebSockets::subscribe("laraloom.posts.{$postId}", [self::ActivityEvent]);
+        }
+    }
+
+    public function subscribeToProfile(int $userId): void
+    {
+        if ($this->connect()) {
+            WebSockets::subscribe("laraloom.profiles.{$userId}", [self::FollowEvent]);
         }
     }
 

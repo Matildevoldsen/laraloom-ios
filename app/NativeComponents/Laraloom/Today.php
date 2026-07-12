@@ -23,6 +23,10 @@ class Today extends NativeComponent
 
     public int $selectedFeed = 0;
 
+    public ?string $nextCursor = null;
+
+    public bool $isLoadingMore = false;
+
     public string $error = '';
 
     public function mount(): void
@@ -56,9 +60,38 @@ class Today extends NativeComponent
                 ? $this->api()->followingFeed()
                 : $this->api()->feed();
             $this->posts = $result['data'];
+            $this->nextCursor = is_string($result['meta']['next_cursor'] ?? null)
+                ? $result['meta']['next_cursor']
+                : null;
             $this->error = '';
         } catch (Throwable) {
             $this->error = 'Laraloom could not refresh. Check your connection and try again.';
+        }
+    }
+
+    public function loadMore(): void
+    {
+        if ($this->nextCursor === null || $this->isLoadingMore) {
+            return;
+        }
+
+        $this->isLoadingMore = true;
+
+        try {
+            $result = $this->selectedFeed === 1
+                ? $this->api()->followingFeed($this->nextCursor)
+                : $this->api()->feed($this->nextCursor);
+            $this->posts = collect([...$this->posts, ...$result['data']])
+                ->unique('id')
+                ->values()
+                ->all();
+            $this->nextCursor = is_string($result['meta']['next_cursor'] ?? null)
+                ? $result['meta']['next_cursor']
+                : null;
+        } catch (Throwable) {
+            $this->error = 'More posts could not be loaded.';
+        } finally {
+            $this->isLoadingMore = false;
         }
     }
 
@@ -107,10 +140,13 @@ class Today extends NativeComponent
         }
     }
 
-    public function openProfile(string $username): void
+    public function openProfile(int $postId): void
     {
-        if ($username !== '') {
-            $this->navigate("/people/{$username}")->transition(Transition::SlideFromRight);
+        $post = collect($this->posts)->firstWhere('id', $postId);
+        $userId = is_array($post) ? ($post['author']['id'] ?? null) : null;
+
+        if (is_int($userId)) {
+            $this->navigate("/people/{$userId}")->transition(Transition::SlideFromRight);
         }
     }
 

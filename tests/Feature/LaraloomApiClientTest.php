@@ -186,6 +186,31 @@ test('conversations and reposts use authenticated social endpoints', function ()
         && $request->hasHeader('Authorization', 'Bearer 1|secure-token'));
 });
 
+test('profiles and follow actions use the authenticated social API', function () {
+    Http::fake([
+        'laraloom.test/api/v1/profiles/taylor' => Http::response(['data' => ['id' => 17, 'username' => 'taylor', 'is_following' => false]]),
+        'laraloom.test/api/v1/profiles/taylor/follow' => Http::response(['active' => true, 'count' => 101]),
+    ]);
+    $client = new LaraloomApiClient(tokenStore('1|secure-token'));
+
+    $profile = $client->profile('taylor');
+    $follow = $client->toggleFollow('taylor');
+
+    expect($profile['username'])->toBe('taylor')
+        ->and($follow)->toBe(['active' => true, 'count' => 101]);
+    Http::assertSent(fn ($request): bool => $request->hasHeader('Authorization', 'Bearer 1|secure-token'));
+});
+
+test('native profile routes resolve stable numeric user ids', function () {
+    Http::fake([
+        'laraloom.test/api/v1/profiles/id/17' => Http::response(['data' => ['id' => 17, 'username' => 'taylor']]),
+    ]);
+
+    $profile = (new LaraloomApiClient(tokenStore('1|secure-token')))->profileById(17);
+
+    expect($profile['id'])->toBe(17);
+});
+
 test('logout revokes the server token before clearing keychain state', function () {
     Http::fake([
         'laraloom.test/api/v1/auth/token' => Http::response(status: 204),

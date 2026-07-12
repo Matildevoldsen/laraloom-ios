@@ -9,6 +9,7 @@ use App\NativeComponents\Laraloom\PostDetail;
 use App\NativeComponents\Laraloom\Profile;
 use App\NativeComponents\Laraloom\ProjectDetail;
 use App\NativeComponents\Laraloom\Projects;
+use App\NativeComponents\Laraloom\PublicProfile;
 use App\NativeComponents\Laraloom\Register;
 use App\NativeComponents\Laraloom\Today;
 use App\NativeComponents\Layouts\LaraloomTabsLayout;
@@ -19,6 +20,7 @@ Route::nativeGroup(LaraloomTabsLayout::class, function (): void {
     Route::native('/', Today::class)->name('today');
     Route::native('/projects', Projects::class)->name('projects');
     Route::native('/profile', Profile::class)->name('profile');
+    Route::native('/people/{id}', PublicProfile::class)->name('people.show');
     Route::native('/compose', Compose::class)->name('compose');
     Route::native('/admin', Admin::class)->name('admin');
     Route::native('/account/delete', DeleteAccount::class)->name('account.delete');

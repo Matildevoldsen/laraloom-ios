@@ -1,9 +1,10 @@
-<refreshable @refresh="refresh" class="w-full h-full bg-theme-background">
+<native-list @refresh="refresh" @endReached="loadMore" :plain="true" class="w-full h-full bg-theme-background">
     <column class="w-full pb-8">
         <column class="w-full px-5 pt-5 pb-4 gap-3 bg-theme-background">
             <row class="items-center gap-3">
-                <column class="w-[34] h-[34] rounded-xl bg-[#F43F8C] items-center justify-center">
-                    <text class="text-white text-[18] font-bold">L</text>
+                <column class="w-[34] h-[34] gap-0 rotate-45">
+                    <row class="w-full h-[17]"><column class="w-[17] h-[17] rounded-[5] border-[2] border-[#FF4D73]" /><column class="w-[17] h-[17] rounded-[5] border-[2] border-white" /></row>
+                    <row class="w-full h-[17] justify-end"><column class="w-[17] h-[17] rounded-[5] border-[2] border-[#A78BFA]" /></row>
                 </column>
                 <column class="flex-1 gap-0">
                     <text class="text-[11] uppercase font-semibold text-[#F43F8C]">Everything Laravel</text>
@@ -29,25 +30,26 @@
 
         @forelse ($posts as $post)
             <column class="w-full" key="post-{{ $post['id'] }}">
-                <pressable :menu="$this->postMenu($post)" @press="openPost({{ $post['id'] }})" class="w-full px-4 py-3">
+                <column class="w-full px-4 py-3">
                     <row class="w-full items-start gap-3">
-                        <column class="w-[38] h-[38] rounded-xl bg-pink-50 dark:bg-[#2B2031] items-center justify-center">
+                        <pressable @press="openProfile({{ $post['id'] }})" class="w-[38] h-[38] rounded-xl bg-pink-50 dark:bg-[#2B2031] items-center justify-center">
                             <icon name="{{ $post['is_ai_curated'] ? 'sparkles' : 'person.crop.circle' }}" :size="18" color="#F472B6" />
-                        </column>
+                        </pressable>
 
                         <column class="flex-1 gap-1">
                             <row class="w-full items-center gap-1">
-                                <text class="text-[14] font-bold text-theme-on-surface" :maxLines="1">{{ $post['author']['name'] ?? $post['source']['name'] ?? 'Laravel community' }}</text>
+                                <pressable @press="openProfile({{ $post['id'] }})" class="shrink"><text class="text-[14] font-bold text-theme-on-surface" :maxLines="1">{{ $post['author']['name'] ?? $post['source']['name'] ?? 'Laravel community' }}</text></pressable>
                                 <text class="flex-1 text-[11] text-theme-on-surface-variant" :maxLines="1">· {{ $post['source']['name'] ?? ucfirst($post['kind']) }}</text>
+                                @if (! empty($post['author']['username']))<button class="glass:clear:interactive" size="xs" icon="person" @press="openProfile({{ $post['id'] }})">Profile</button>@endif
                                 <pressable :menu="$this->postMenu($post)" a11y-label="Post actions" class="w-[28] h-[28] rounded-full items-center justify-center">
                                     <icon name="ellipsis" :size="16" color="#8E8797" />
                                 </pressable>
                             </row>
 
                             @if (! empty($post['title']))
-                                <text class="text-[16] font-bold text-theme-on-surface" :maxLines="2">{{ $post['title'] }}</text>
+                                <pressable :menu="$this->postMenu($post)" @press="openPost({{ $post['id'] }})"><text class="text-[16] font-bold text-theme-on-surface" :maxLines="2">{{ $post['title'] }}</text></pressable>
                             @endif
-                            <text class="text-[13] text-theme-on-surface-variant" :maxLines="2">{{ $post['summary'] ?: $post['body'] }}</text>
+                            <pressable :menu="$this->postMenu($post)" @press="openPost({{ $post['id'] }})"><text class="text-[13] text-theme-on-surface-variant" :maxLines="2">{{ $post['summary'] ?: $post['body'] }}</text></pressable>
 
                             @if (! empty($post['tags']))
                                 <row class="items-center gap-2 pt-1">
@@ -73,7 +75,7 @@
                             </row>
                         </column>
                     </row>
-                </pressable>
+                </column>
                 <divider class="w-full" />
             </column>
         @empty
@@ -85,6 +87,7 @@
                 </column>
             @endif
         @endforelse
+        @if ($isLoadingMore)<row class="w-full items-center justify-center py-5"><activity-indicator color="#F43F8C" /></row>@endif
     </column>
 
-</refreshable>
+</native-list>
