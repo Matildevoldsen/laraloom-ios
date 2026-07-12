@@ -39,22 +39,13 @@
                 </column>
             </row>
 
-            <divider class="w-full" />
-
             <row class="w-full items-center justify-between">
-                <row class="items-center gap-1">
-                    <button class="glass:clear:interactive" size="lg" icon="photo.on.rectangle.angled" @press="chooseMedia" />
-                    <button class="glass:clear:interactive" size="lg" icon="link" @press="toggleDetails" />
-                    <button class="glass:clear:interactive" size="lg" icon="number" @press="toggleDetails" />
+                <row class="items-center gap-2">
+                    <button class="glass:clear:interactive" size="lg" icon="photo.on.rectangle.angled" @press="chooseMedia">Media</button>
+                    <button class="glass:clear:interactive" size="lg" icon="slider.horizontal.3" @press="toggleDetails">Details</button>
                 </row>
 
                 <button class="glass:prominent:interactive px-5" variant="accent" size="lg" :loading="$isSubmitting" :disabled="$isSubmitting" @press="submit">Post</button>
-            </row>
-
-            <row class="w-full items-center">
-                <button class="glass:clear:interactive" size="sm" icon="slider.horizontal.3" @press="toggleDetails">
-                    {{ $showsDetails ? 'Hide details' : 'Add title, link, tags or post type' }}
-                </button>
             </row>
 
             @if ($error !== '')
@@ -68,7 +59,7 @@
 
     <bottom-sheet :visible="$showsDetails" detents="medium,large" @dismiss="closeDetails">
         <column class="w-full bg-theme-background px-5 pt-2 pb-8 gap-5">
-            <row class="w-full items-center justify-between pb-3 border-b border-theme-outline">
+            <row class="w-full items-center justify-between pb-2">
                 <column class="gap-1">
                     <text class="text-[20] font-bold text-theme-on-surface">Post details</text>
                     <text class="text-[12] text-theme-on-surface-variant">Optional context helps people find your work.</text>
@@ -77,15 +68,32 @@
             </row>
 
             <tab-row :selectedIndex="$kindIndex" @change="updateKind">
-                <tab label="Note" />
+                <tab label="Post" />
                 <tab label="Article" />
                 <tab label="Package" />
                 <tab label="Project" />
             </tab-row>
 
-            <outlined-text-input native:model.debounce.300ms="title" placeholder="Title" :variant="0" />
-            <outlined-text-input native:model.debounce.300ms="url" placeholder="Original URL" keyboard="url" :variant="0" />
-            <outlined-text-input native:model.debounce.300ms="tags" placeholder="Laravel, NativePHP, open source" :variant="0" />
+            <column class="gap-2">
+                <row class="items-center gap-1"><text class="text-[12] font-semibold text-theme-on-surface">Title</text><text class="text-[12] text-theme-on-surface-variant">Optional</text></row>
+                <column class="rounded-2xl bg-theme-surface-variant px-4 py-3">
+                    <bare-text-input native:model.debounce.300ms="title" placeholder="Add a headline if useful" color="#18181B" dark-color="#E4E4E7" />
+                </column>
+            </column>
+
+            <column class="gap-2">
+                <row class="items-center gap-1"><text class="text-[12] font-semibold text-theme-on-surface">Link</text><text class="text-[12] text-theme-on-surface-variant">Optional</text></row>
+                <column class="rounded-2xl bg-theme-surface-variant px-4 py-3">
+                    <bare-text-input native:model.debounce.300ms="url" placeholder="https://" keyboard="url" color="#18181B" dark-color="#E4E4E7" />
+                </column>
+            </column>
+
+            <column class="gap-2">
+                <row class="items-center gap-1"><text class="text-[12] font-semibold text-theme-on-surface">Topics</text><text class="text-[12] text-theme-on-surface-variant">Optional</text></row>
+                <column class="rounded-2xl bg-theme-surface-variant px-4 py-3">
+                    <bare-text-input native:model.debounce.300ms="tags" placeholder="Laravel, NativePHP, open source" color="#18181B" dark-color="#E4E4E7" />
+                </column>
+            </column>
 
             <button class="glass:prominent:interactive" variant="accent" size="lg" @press="closeDetails">Done</button>
         </column>

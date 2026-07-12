@@ -101,12 +101,6 @@ class Compose extends NativeComponent
             return;
         }
 
-        if ($kind !== 'note' && $title === '') {
-            $this->error = 'Add a title for this kind of post.';
-
-            return;
-        }
-
         $this->isSubmitting = true;
         $this->error = '';
 
